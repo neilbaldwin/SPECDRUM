@@ -1,0 +1,2185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>SPECDRUM User Manual</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="specdrum.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+</header>
+<p><img src="images/sd_logo_02.png" class="image12" alt="" /></p>
+<p><strong>SPECDRUM by Neil Baldwin, Marmot Audio © 2023</strong></p>
+<p><br /></p>
+<h1 id="what-is-specdrum">What is SPECDRUM?</h1>
+<hr />
+<p><img src="images/v1_01_overview.png" class="image12" alt="" /></p>
+<p>(Updated image for V1.10)</p>
+<p>On the surface, <strong>SPECDRUM</strong> is a two-track sample-based
+drum machine. Go a little deeper and <strong>SPECDRUM</strong> is a
+randomly organic, self-catalysing sound engine. Or a slowly evolving
+texture generator. Or a polyrhythmic percussion section. Or a digital
+sprinkler that dusts your existing beats with <em>Hundreds and
+Thousands</em>.</p>
+<p><img src="images/hundredsAndThousands.png" class="image6"
+alt="" /></p>
+<p><strong>SPECDRUM</strong> is driven by dual synchronised step
+sequencers, each with it’s own independent clock-divider and playback
+vector. Each sequencer cell uses an audio sample as its primary sound
+generation to which a set of playback parameters is applied. The
+intensity (and sometimes character) of each playback parameter is
+determined by either direct setting, randomly within a defined range or
+just simply random.</p>
+<h1 class="do_break_before" id="specdrum-features">SPECDRUM
+Features</h1>
+<hr />
+<p>SPECDRUM is more than the sum of its parts but here’s its basic
+parts, for parts list lovers:</p>
+<ul>
+<li>two synchronised independent 8-step sequencers, each with their own
+clock divider, five different playback modes, step start/length and
+swing control</li>
+<li>up to 16 samples can be loaded, one per sequencer step</li>
+<li>each step is an instance of a sample playback engine with its own
+individual playback parameters</li>
+<li>sample playback engine comprises:
+<ul>
+<li>variable playback speed (plus preset scales)</li>
+<li>amplitude modulation</li>
+<li>overdrive</li>
+<li>resonant LPF/HPF</li>
+<li>AD amplitude envelope</li>
+<li>gain and panning modulation</li>
+<li>variable sample offset/loop/direction</li>
+<li>retriggering controls</li>
+<li>self-modulation</li>
+<li>final stage with low/high cut filters</li>
+</ul></li>
+<li>sample cell parameters can be fixed (parameter lock style) or given
+random ranges to behave like sample-and-hold</li>
+<li>Macro Control section allows simultaneous and complex manipulation
+of sample cell parameters and playback controls</li>
+<li>Extensive MIDI control including the ability to play the cells via
+MIDI, decoupled from the sequencer</li>
+<li>multiple instances can be loaded into Live (CPU and memory
+allowing)</li>
+<li>Live device saving including samples (saved as absolute file path
+references)</li>
+<li>Max For Live Preset system for storing and recalling snapshots
+on-the-fly</li>
+<li>Presets can be recalled via MIDI (notes)</li>
+<li>Individual track outputs to Live as well as regular device mix
+output</li>
+</ul>
+<h1 class="do_break_before" id="index">Index</h1>
+<hr />
+<p><a href="#specdrum-features">SPECDRUM Feature List</a><br />
+<a href="#system-requirements">System Requirements</a><br />
+<a href="#installation">Installation</a><br />
+<a href="#loading-and-saving">Loading and Saving Presets</a><br />
+<a href="#interface-overview">Interface Overview</a><br />
+<a href="#quick-start">Quick Start Guide</a><br />
+<a href="#reference-manual">Reference Manual</a><br />
+<a href="#playback-parameter-sliders">Reference: Playback Parameter
+Sliders</a><br />
+<a href="#playback-parameter-slider-functions">Reference: Playback
+Parameter Functions</a><br />
+<a href="#playback-parameter-select-toggles">Reference: Playback
+Parameter Select Buttons</a><br />
+<a href="#cell-playback-controls">Reference: Cell Playback
+Controls</a><br />
+<a href="#loading-samples">Reference: Loading Samples</a><br />
+<a href="#cell-utility-settings">Reference: Cell Utility
+Settings</a><br />
+<a href="#sequencer-controls">Reference: Sequencer Controls</a><br />
+<a href="#macro-control-section">Reference: Macro Controls</a><br />
+<a href="#cell-operations">Reference: Macro Controls - Cell
+Operations</a><br />
+<a href="#playback-parameter-operations">Reference: Macro Controls -
+Playback Parameter Operations</a><br />
+<a href="#macro-control-slider-modification-controls">Reference: Macro
+Controls - Slider Modification Controls</a><br />
+<a href="#midi-rationale">Reference: MIDI Rationale</a><br />
+<a href="#midi-controls-and-mapping">Reference: MIDI Controls and
+Mapping</a><br />
+<a href="#preset-system">Preset System</a><br />
+<a href="#release-history">Release History</a></p>
+<h1 id="system-requirements">System Requirements</h1>
+<hr />
+<p><strong>SPECDRUM</strong> is a “Max For Live” device therefore you
+need an up-to-date working installation of Ableton Live, 10 or 11, and
+Max For Live (which comes packaged with Live 10/11 Suite these
+days).</p>
+<p>You’ll need a mouse as the interface is <em>mouse-input-heavy</em>. A
+MIDI controller with knobs and such would also be fun for manipulation
+of certain controls.</p>
+<h1 id="installation">Installation</h1>
+<hr />
+<p>The simplest and cleanest way to install SPECDRUM is by the following
+method:</p>
+<ul>
+<li>Create a folder somewhere on your computer, perhaps in your
+Documents folder</li>
+<li>Copy the SPCECDRUM device (the .amxd file) into this new folder</li>
+<li>In Live, add this new folder to your “Places” (“Add Folder” at the
+bottom of the left-hand pane)</li>
+</ul>
+<p>You can then drag-and-drop SPECDRUM onto a Live track from the new
+Places folder.</p>
+<p>Please note that directly adding Max For Live devices directly to
+your Live library is not recommended.</p>
+<p>SPECDRUM can operate as a Max Audio device or a Max MIDI device or as
+an instrument inside and instrument rack. How you use it depends on
+whether you want to control it via MIDI or not. This assumes you are
+familiar with working with these kinds of devices and the advantages and
+limitaions of each. The discussion of each is beyond the scope of this
+document.</p>
+<p>SPECDRUM has 3 stereo audio outputs. As well as the regular device
+output, 3/4 and 5/6 correspond to Track A and Track B so you can route
+individual tracks to different destinations within Live.</p>
+<h1 id="loading-and-saving-specdrum">Loading and Saving SPECDRUM</h1>
+<hr />
+<h4 id="live-device-preset">Live Device Preset</h4>
+<p>You can save SPECRDUM Live presets in the same way you would do for
+other Max For Live devices by using the Save icon in the top-right
+corner of the device window. Give it a new name (rather than overwrite
+the original) and save it to your Live library.</p>
+<p>Saving will save all of the sequencer parameters, copy any new
+samples that you haven’t previously loaded (and saved) into SPECDRUM and
+also save a <em>reference</em> to each loaded sample. Note: If you move
+the source samples after saving there’s no guarantee that SPECDRUM will
+be able to find them again.</p>
+<p>When reloading a saved preset, if it contains many samples it may
+take a couple of seconds after the devices is loaded to populate all of
+the sample cells.</p>
+<h4 id="preset-system-new-in-v.1.10">Preset System (new in V.1.10)</h4>
+<p>It’s also possible since V1.10 to store Max For Live “presets”
+<em>inside</em> an instance of SPECDRUM that can be recalled on-the-fly
+via Max For Live’s Preset system.</p>
+<p>Please see reference manual section <a href="#preset-system">Preset
+System</a> for full details.</p>
+<h1 id="help-and-issues">Help and Issues</h1>
+<hr />
+<p>Apart from this manual I’ve created a Github repository specifically
+for submission and tracking of SPECDRUM issues:</p>
+<p><a href="https://github.com/neilbaldwin/SPECDRUM">SPECDRUM @
+Github</a></p>
+<h1 class="do_break_before" id="interface-overview">Interface
+Overview</h1>
+<hr />
+<blockquote>
+<p>💁 Holding your mouse pointer over any of SPECDRUM’s controls will
+show a little reminder of the control’s primary function. If you find
+them obtrusive, you can also turn the hints on/off by clicking the small
+toggle button with an arrow.</p>
+</blockquote>
+<p>The <strong>SPECDRUM</strong> interface is split vertically into four
+main areas. From left-to-right they are: <strong>Macro Control</strong>,
+<strong>Preset System</strong>, <strong>Sequencer Control</strong> (one
+for each of the two 8-step sequencers) and <strong>Sequencer
+Cells</strong>.</p>
+<h2 id="macro-control">Macro Control</h2>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Macro Control Section</th>
+<th style="text-align: left;">Functions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><img
+src="images/sd_macroControlOverview.png" class="image3" alt="" /></td>
+<td style="text-align: left;">The <strong><em>Macro
+Control</em></strong> section is used to modify multiple Sequencer Cells
+simultaneously and is further split into two functions: <strong>Cell
+Operations</strong> and <strong>Parameter Operations</strong>. For more
+details see: <a href="#macro-control-section"><em>Reference Manual:
+Macro Controls</em></a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><img
+src="images/sd_macroControlCellOperations.png" class="image3"
+alt="" /></td>
+<td style="text-align: left;">The upper section, <strong>Cell
+Operations</strong>, is concerned with the selection and modification of
+Sequencer Cells on a per-cell(s) basis. See: <a
+href="#cell-operations"><em>Reference Manual: Macro Control : Cell
+Operations</em></a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><img
+src="images/sd_macroControlParameterOperations.png" class="image3"
+alt="" /></td>
+<td style="text-align: left;">The lower section, <strong>Parameter
+Operations</strong>, is concerned with selecting and operating on
+individual <strong><em>Playback Parameters</em></strong> of the cells.
+See: <a href="#playback-parameter-operations"><em>Reference Manual:
+Playback Parameter Operations</em></a></td>
+</tr>
+</tbody>
+</table>
+<p>These three sections work hand-in-hand to enable you to focus your
+manipulation of the Sequencer Cells. Using a combination of cell
+operations and parameter operations you are able to focus your edits on
+as narrow or as broad a scope as needed.</p>
+<h2 id="preset-section">Preset Section</h2>
+<p><img src="images/presetSystem.png" class="image3" alt="" /></p>
+<p>The <strong>Preset System</strong> section contains a 4 x 10 grid of
+preset slots for storing and recalling parameter snapshots on-the-fly
+and also controls to load, save and clear the currently loaded Preset
+collection.</p>
+<p>Refer to the section <a href="#preset-system"><em>Preset
+System</em></a> for details.</p>
+<h2 id="sequencer-control">Sequencer Control</h2>
+<hr />
+<p>The <strong><em>Sequencer Control</em></strong> section contains two
+Sequencer Controls, one for each of the two <strong>tracks</strong>. The
+two tracks, upper and lower, will be referred to as <strong>Track
+A</strong> and <strong>Track B</strong> respectively.<br />
+<br/><br />
+<img src="images/sd_sequencerControl.png" class="image3" alt="" /></p>
+<p>The upper section is the <em><strong>Sequencer Clock
+Divider</strong></em> which sets the amount of time taken to play one
+<strong>Sequencer Cell</strong> and is always based on the current Live
+tempo.</p>
+<p>Underneath the <em>Sequencer Clock Divider</em> is the
+<strong><em>Sequencer Swing Control</em></strong>, below that is the
+<strong><em>Sequencer Vector Control</em></strong>. The <em>Sequencer
+Vector Control</em> has three controls, from left-to-right
+<strong><em>Start Step</em></strong>, <strong><em>Playback
+Mode</em></strong> and <strong><em>Sequence Length</em></strong>.</p>
+<p>The <strong>Sequencer Clock Divider</strong> and <strong>Sequencer
+Vector Controls</strong> can be set independently for each track, though
+at all times both tracks remain in some mathematical relationship with
+each other and with the Live tempo.</p>
+<p>Please see <a href="#sequencer-controls"><em>Sequencer
+Controls</em></a> in the <em>Reference Manual</em> section of this
+document.</p>
+<h2 id="sequencer-cells">Sequencer Cells</h2>
+<hr />
+<p>The long section of the interface on the right are the two horizontal
+tracks of <strong>Sequencer Cells</strong>.</p>
+<p><img src="images/sd_sequencerCells.png" class="image12" alt="" /></p>
+<p>Each track is comprised of 8 cells, each containing a
+<strong><em>Cell Waveform</em></strong> that shows a representation of
+the currently loaded sample. Overlaid on the waveform display are the
+coloured <strong><em>Playback Parameter Sliders</em></strong>, coloured
+<strong><em>Playback Parameter Select</em></strong> buttons (small
+coloured squares beneath) and <strong><em>Cell Playback
+Controls</em></strong> along the top.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Cell Waveform Display</th>
+<th style="text-align: center;">Playback Parameter Sliders</th>
+<th style="text-align: center;">Playback Parameter Select</th>
+<th style="text-align: center;">Cell Playback Controls</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><img src="images/sd_cellWaveform.png"
+class="image2" alt="" /></td>
+<td style="text-align: center;"><img
+src="images/sd_cellPlaybackParameterSliders.png" class="image2"
+alt="" /></td>
+<td style="text-align: center;"><img
+src="images/sd_cellPlaybackParameterSelect.png" class="image2"
+alt="" /></td>
+<td style="text-align: center;"><img
+src="images/sd_cellPlaybackControls.png" class="image2" alt="" /></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💁 There’s a lot to explore! While many features may be obvious there
+are some that won’t be until you understand the UI better. Please refer
+to <a href="#reference-manual"><em>Reference Manual</em></a> section for
+details on each section and control.</p>
+</blockquote>
+<p>Finally, on the right-hand-side of the UI, are audio output controls
+for each track. You can set the <strong>Track Output Fader</strong> and
+<strong>Track Mute Toggle</strong> for each track independently.</p>
+<blockquote>
+<p>💁 While the <strong>Reference Manual</strong> section deals with the
+details of cell control, one thing to mention here, as it is technically
+the final aspect of the UI, is the <strong><em>Cell Utility
+Settings</em></strong>.<br />
+<img src="images/sd_cellUtilityView.png" class="image3" alt="" /><br />
+These settings are on the “back” of each cell and are accessed by
+clicking on the cog-wheel icon in the <em>Cell Playback Controls</em>
+tab at the top of each cell. Here you can set various playback settings
+that can’t be controlled by the <em>Playback Parameter Sliders</em> such
+as low and high pass filters and the pan position. Please refer to <a
+href="#cell-utility-settings"><em>Reference Manual: Cell Utility
+Settings</em></a> for more detail.</p>
+</blockquote>
+<h1 class="do_break_before" id="quick-start">Quick Start</h1>
+<hr />
+<p><strong>SPECDRUM</strong> is pretty deep and at times a bit abstract
+by design. This Quick Start section is intended to just get you
+up-and-running and to illustrate some core concepts. Once you’re
+comfortable with the basics the <a
+href="#reference-manual"><em>Reference Manual</em></a> section goes into
+much finer detail about all of the controls.</p>
+<h2 id="lets-go">Let’s Go</h2>
+<p>If you’ve already got SPECDRUM loaded into an audio track then well
+done! If not, drag an instance of it into a free audio track. After a
+brief delay you will be presented with a SPECDRUM blank slate:</p>
+<p><img src="images/sd_emptyDevice.png" class="image12" alt="" /></p>
+<p>Hit <strong>Play</strong> on Live’s transport controls and you’ll see
+both sequencer tracks progress from left-to-right, the current step
+indicated by a coloured frame around the currently playing cell. Track A
+indicator is blue to match its Sequencer Control colours. Track B’s is
+red.</p>
+<p>You can leave Live playing for the time being.</p>
+<h2 id="set-playback-vector">Set Playback Vector</h2>
+<p>For simplicity we’re going to just concentrate on Track A (the top)
+of the sequencer and focus in on just the first cell. At the moment both
+tracks are playing from step 1 to step 8 in a loop.</p>
+<p>To change the <strong>Playback Vector</strong> for Track A
+click-and-drag on the <span class="digit">8</span> digit in Track A’s
+<strong>Sequence Control</strong> section (that’s the smaller digit in
+the bottom-right). Set it to read <span class="digit">1</span> (both the
+start and length should then be <span class="digit">1</span>)</p>
+<p><img src="images/sd_sequencerControl-11.png" class="image2"
+alt="" /></p>
+<p>Track A now starts and ends on the first cell. You should now see
+that the blue-coloured frame will remain constant on the first cell. As
+we haven’t changed Track B it will still be looping around all eight
+steps. For the purpose of this quick start tutorial we’ll ignore it.</p>
+<h2 id="load-a-sample">Load A Sample</h2>
+<blockquote>
+<p>💁 <strong>Core Concept: Loading a Sample Into a
+Cell</strong><br/><br />
+To load a sample in SPECDRUM you drag-and-drop a file from your computer
+browser/folder/desktop onto the Sequencer Cells.<br />
+<br>You can also drag in samples from Live’s built-in file
+browser.<br />
+<br>There are also a few special functions to load a sample into
+multiple cells or load multiple samples. See <a
+href="#loading-samples">Reference: Loading Samples</a> for details.</p>
+</blockquote>
+<p>Shrink the Live interface enough so you can open a folder on your
+computer. Obviously there needs to be some samples in the folder.
+Drag-and-drop a sample onto the first cell of Track A. For ease of this
+tutorial choose something like a single drum hit.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Hold over cell until it’s
+highlighted</th>
+<th style="text-align: center;">Cell display showing sample</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><img src="images/sd_dragSample.png"
+class="image3" alt="" /></td>
+<td style="text-align: center;"><img src="images/sd_sampleLoaded.png"
+class="image3" alt="" /></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💁 As you hover over a cell you’ll see a coloured outline (this is
+Max feedback to indicate that it is a valid file. SPECDRUM will play
+most stuff but it won’t let you load a PDF or a spreadsheet.)</p>
+</blockquote>
+<p>Drop the file and two things will happen. Firstly the cell display
+will change to show a representation of the sample you just loaded.
+Secondly (as long as you left Live playing as I suggested) you should
+hear it playing. Repeatedly. This is good!</p>
+<blockquote>
+<p>💁 <strong>Sample Types</strong><br/><br />
+At the point of release, SPECDRUM treats all samples as mono internally.
+You can load stereo samples but the output will be summed to mono. This
+was done to save processing load. The efficiency of the internal sample
+engine is top priority for further development which should then make
+some overhead for stereo processing. The output stage is
+<em>pseudo-stereo</em> as you can set and modulate the pan position of
+any cell’s output.</p>
+</blockquote>
+<h2 id="changing-the-clock-divider">Changing The Clock Divider</h2>
+<p>With Live still running and the sample you loaded still annoying you,
+click and drag on the <span class="digit">04</span> in the middle of the
+<strong>Sequencer Control</strong> for Track A.</p>
+<p><img src="images/sd_changeSequenceLength.png" class="image2"
+alt="" /><br />
+You’ll notice as you drag up and down, by default the number changes in
+“musical” steps: 1, 2, 3, 4, 6, 8, 12 and so on. This is so that you can
+quickly dial in some of the more commonly used time relationships. You
+can change this behaviour so that an <em>unconventional</em> step time
+can be set. More on this in the <a
+href="#sequencer-controls"><em>Reference Manual: Sequencer
+Control</em></a> section.</p>
+<h2 id="changing-the-sequencer-length">Changing The Sequencer
+Length</h2>
+<p>Now click and drag on the right-hand <span class="digit">1</span>
+that you changed earlier. This time drag upwards and set it to <span
+class="digit">2</span>. This sets the sequence length on Track A to two
+steps. Obviously as SPECDRUM plays the second cell there is no sound.
+You know what to do to load a different sample into the second cell.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Hold over cell until it’s
+highlighted</th>
+<th style="text-align: center;">Cell display showing sample</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><img
+src="images/sd_dragSecondSample.png" class="image3" alt="" /></td>
+<td style="text-align: center;"><img
+src="images/sd_twoSamplesLoaded.png" class="image3" alt="" /></td>
+</tr>
+</tbody>
+</table>
+<p>You should now hear both samples played sequentially (providing Live
+is still playing).</p>
+<h2 id="sequencer-playback-mode-and-sequencer-swing">Sequencer Playback
+Mode and Sequencer Swing</h2>
+<p>The two remaining controls we have yet to look at in the Sequencer
+Control section are <strong>Sequencer Playback Mode</strong> and
+<strong>Sequencer Swing</strong>.</p>
+<p>Clicking and dragging the <strong>Sequencer Playback Mode</strong>
+icon will change the playback between <strong><em>forward</em></strong>,
+<strong><em>reverse</em></strong>, <strong><em>ping-pong</em></strong>,
+<strong><em>oscillating</em></strong> and
+<strong><em>random</em></strong>. The difference between the modes might
+not be so obvious with just two cells on a single track. You can read
+more about SPECDRUM’s play modes here: <a
+href="#playback-mode">Sequencer Playback Mode</a></p>
+<p><strong>Sequencer Swing</strong> is controlled by the horizontal
+slider. At its left-most position there will be no “swing” applied to
+the playback. Slide this towards the right to increase the swing amount.
+You should hear that the second step is delayed the more you move the
+Swing control to the right.</p>
+<h2 id="a-little-deeper-playback-parameters">A Little Deeper: Playback
+Parameters</h2>
+<p>Now we’ve got the basic operation out of the way let’s take a very
+brief look at the <strong><em>Playback Parameter Sliders</em></strong>.
+There’s full explanation of each slider’s function in the <a
+href="#reference-manual"><em>Reference Manual</em></a> section.</p>
+<p><img src="images/sd_cellWaveform.png" class="image6" alt="" /></p>
+<p>For each Playback Parameter Slider, the default positional is
+vertically centered (you can just see a small coloured line across the
+center of each one).</p>
+<p>With the marker in the center, the sample is played at its original
+pitch. Above the line it is played at a higher pitch, below the line it
+is played lower pitch (how the pitch relates to the slider is set in the
+cell’s utility settings, see the section <a
+href="#cell-utility-settings"><em>Reference Manual: Cell Utility
+Settings</em></a></p>
+<p>While Live is still playing, move your mouse over the left-hand
+slider in the first cell. The first slider (coloured red) controls the
+playback pitch of the sample in the cell.</p>
+<h3 id="single-click">Single Click</h3>
+<p>Single-click in the Pitch slider of the first cell somewhere between
+the center and the top of the cell.</p>
+<p><img src="images/sd_singleClickParameter.png" class="image4"
+alt="" /></p>
+<p>You should hear the sample play higher in pitch. Click below the
+center and you’ll hear the sample at a lower pitch. You’ll also breifly
+see a coloured helper overlay that shows the current values of the
+slider (in the format LOW:HIGH). This is to help with situations where
+you need a more precise idea of the value you’re setting.</p>
+<h3 id="click-and-drag">Click-and-Drag</h3>
+<p>This time, use the mouse to click-and-drag above the center line of
+the Pitch fader to create a small rectangle.</p>
+<p><img src="images/sd_clickAndDragParameter.png" class="image4"
+alt="" /></p>
+<p>For this particular Playback Parameter, the size of the rectangle
+determines a random range for the pitch. You’ll hear that each time the
+cell plays you’ll get a variation in the pitch. Again, the little helper
+overlay will appear for as long as you’re click-dragging. It will
+disappear when you stop dragging.</p>
+<blockquote>
+<p>💁 <strong>Core Concept: Setting Slider Values</strong><br /><br />
+In SPECDRUM there are two ways to manually set values:
+<strong>Single-Click</strong> sets a fixed value while
+<strong>Click-and-Drag</strong> sets a random range.</p>
+</blockquote>
+<p>As we dragged the rectangle in the upper half of the slider you’ll
+only get random pitches higher than the original. You can of course drag
+the range rectangle lower to span the center line, then you’ll then get
+random pitches higher and lower than the original.</p>
+<blockquote>
+<p><strong>Further Reading: Max Documentation</strong><br />
+The sliders used for Playback Parameters are Max <code>rslider</code>
+objects. There are various modifier keys that you can use with mouse
+input to manipulate them in different ways. Knowing the modifier keys
+will help you get the best out of SPECDRUM’s interface. The keys are
+specific to Mac/Win and are detailed here: <a
+href="#modifier-keys-when-setting-values-in-sliders">Modifier Keys When
+Setting Values</a> and you can also check the official Max documentation
+for up-to-date knowledge: <a
+href="https://docs.cycling74.com/max8/refpages/rslider?q=rslider">Max:
+Rslider Reference</a></p>
+</blockquote>
+<h2 id="quick-start-conclusion">Quick Start: Conclusion</h2>
+<p>At this point I’m sure you’ve been more than tempted to click and
+drag inside the other Playback Parameter faders. You’ll probably grasp
+the function of most while some others will probably leave you
+scratching your head. The function of each one is detailed in the <a
+href="#reference-manual"><em>Reference Manual</em></a> section.</p>
+<p>One other thing we haven’t touched on yet are the icons in the top
+tab of each cell. These are the <strong><em>Cell Playback
+Controls</em></strong>.</p>
+<p><img src="images/sd_cellPlaybackControls.png" class="image6"
+alt="" /><br />
+I won’t detail all of them here but two that are topical at this time
+are the second and third from the right. The <span
+class="digit">-</span> icon resets the <em>Playback Parameter
+Sliders</em> in the cell. The <span class="digit">X</span> is for
+removing the sample from the cell. You can probably work out some of the
+others but they are detailed in the section <a
+href="#cell-playback-controls"><em>Reference Manual: Cell Playback
+Controls</em></a></p>
+<h1 class="do_break_before" id="reference-manual">Reference Manual</h1>
+<hr />
+<p>It was difficult to know how to approach this section: do you start
+at a higher level and work down or start at a lower level and work
+upwards/outwards? I figured, as the Playback Parameter Sliders are the
+heart of SPECDRUM, it would be best to start there first. You can, of
+course, jump to the sub-sections on <a
+href="#macro-control-section"><em>Macro Control</em></a> and <a
+href="#sequencer-controls"><em>Sequencer Control</em></a> if you need to
+know how that stuff works first instead.</p>
+<h2 id="playback-parameter-sliders">Playback Parameter Sliders</h2>
+<p>Each cell contains eight <strong>Playback Parameter Sliders</strong>,
+each one coloured differently. These sliders are used to set single
+fixed values or define a range which will be used to generate a random
+value. These values are then applied to their related aspect of the
+sample playback or modulation each time the cell is triggered by the
+sequencer.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Playback Parameter Slider Colours</th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><img src="images/sd_focusOnSliders.png"
+class="image3" alt="" /></td>
+<td style="text-align: left;"><strong>Red</strong>: Sample Playback
+Speed/Pitch<br />
+<strong>Orange</strong>: Amplitude Modulation and Overdrive<br />
+<strong>Yellow</strong>: Dual-state LPF/HPF Filter<br />
+<strong>Green</strong>: AD (Attack-Decay) Amplitude Envelope<br />
+<strong>Cyan</strong>: Gain and Pan<br />
+<strong>Blue</strong>: Sample Offset, Direction &amp; Loop<br />
+<strong>Purple</strong>: Retriggering &amp; Probability<br />
+<strong>Magenta</strong>: Cell Self-Modulation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="slider-function-terminology">Slider Function Terminology</h3>
+<p>There are two methods to setting values in the Playback Parameter
+Sliders (single click or click-and-drag) but also <em>where</em> you
+click affects the function of the slider. The next section deals with
+the function of each slider and uses the following terms to describe the
+different ways of setting values in them:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Setting Action</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><em>Single Value</em></td>
+<td>the function when you set a value with a single click</td>
+</tr>
+<tr class="even">
+<td><em>Range</em></td>
+<td>the function when you set a range by<br />
+click-and-drag</td>
+</tr>
+<tr class="odd">
+<td><em>Upper</em></td>
+<td>the function when the single value or range is in the upper half of
+the slider</td>
+</tr>
+<tr class="even">
+<td><em>Lower</em></td>
+<td>the function when the single value or range is in the lower half of
+the slider</td>
+</tr>
+<tr class="odd">
+<td><em>Span</em></td>
+<td>applies only to <em>range</em>, the function when the range spans
+the upper and lower halves of the slider</td>
+</tr>
+</tbody>
+</table>
+<h3 id="modifier-keys-when-setting-values-in-sliders">Modifier Keys When
+Setting Values in Sliders</h3>
+<p>There are several modifier keys that you can use in conjunction with
+mouse clicking and dragging to change the slider range in different
+ways:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">MACINTOSH</th>
+<th style="text-align: left;">WINDOWS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Extend range instead of replacing it</td>
+<td style="text-align: left;">SHIFT + Click</td>
+<td style="text-align: left;">SHIFT + Click</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Shift range</td>
+<td style="text-align: left;">CMD + Click</td>
+<td style="text-align: left;">CTRL + Double-click</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Expand or shrink range</td>
+<td style="text-align: left;">OPT + Click</td>
+<td style="text-align: left;">ALT + Click</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Select entire range</td>
+<td style="text-align: left;">CMD + Double-click</td>
+<td style="text-align: left;">CTRL + Double-click</td>
+</tr>
+</tbody>
+</table>
+<p>Note: some of these may not work. I think it depends on what other
+system modifier keys you have active on your system so where there’s a
+clash it won’t work in a Max device. How you resolve that for your own
+system is outside the scope of this documentation.</p>
+<h3 id="slider-value-helper-display">Slider Value Helper Display</h3>
+<p>As you click-and-drag sliders you’ll see a small two-integer overlay
+appear in the cell. It shows the current range set in the slider you’re
+moving in the format LOW:HIGH. It will stay on-screen as long as you are
+dragging the mouse (while holding the mouse button) and then fades off
+after you stop dragging. This is to help in situations where you need to
+set a more precise value in the slider.</p>
+<h2 class="do_break_before"
+id="playback-parameter-slider-functions">Playback Parameter Slider
+Functions</h2>
+<h5 class="red" id="sample-playback-pitchspeed">Sample Playback
+Pitch/Speed</h5>
+<p>The red slider sets the playback pitch/speed of the sample. It’s just
+a simple rate change, the samples are not time-stretched.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Single Value</th>
+<th style="text-align: left;">Range</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><img src="images/sd_focusRedSlider.png"
+class="image2" alt="" /></td>
+<td style="text-align: left;"><strong>Upper</strong>: will play the
+sample faster than the original speed. The speed depends on the distance
+from the center.<br /><br />
+<strong>Lower</strong>: will play the sample slower than the original
+speed.</td>
+<td style="text-align: left;"><strong>Upper</strong>: set a random
+faster playback speed within the range.<br /><br />
+<strong>Lower</strong>: set a random slower playback speed within the
+range.<br /><br />
+<strong>Span</strong>: set a random playback speed, faster or slower,
+within the range.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💁 The Pitch slider works in conjunction with the
+<strong><em>Scale</em></strong> setting in the <strong><em>Cell Utility
+View</em></strong> which can be accessed via the small cog icon on the
+left of the <em>Cell Playback Controls</em>. See <a
+href="#cell-utility-settings"><em>Cell Utility View</em></a> in the
+<em>Reference Section</em>.<br><br />
+Setting a Span in the Pitch slider works differently depending on the
+Scale Mode you have set in the Cell Utility Settings view. If you have a
+scale selected the range defines the range of notes within that scale,
+using the lower part of the range as the root note, from which a random
+note will be selected.</p>
+</blockquote>
+<h5 class="orange" id="amplitude-modulation-and-overdrive">Amplitude
+Modulation And Overdrive</h5>
+<p>The orange slider applies amplitude modulation and/or overdrive to
+the output of the cell. This is the first of the dual-function sliders
+where the upper and lower halves of the slider control different but
+<em>related</em> parameters.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Single Value</th>
+<th style="text-align: left;">Range</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><img src="images/sd_focusOrangeSlider.png"
+class="image2" alt="" /></td>
+<td style="text-align: left;"><strong>Upper</strong>: will apply
+Amplitude Modulation to the cell output. The frequency of the modulation
+goes from 40hz (just above middle) to 1000hz (top).<br /><br />
+<strong>Lower</strong>: applies Overdrive to the cell output. This uses
+the stock <code>overdrive~</code> Max object. The lower the setting
+(below the center line) the higher Drive Value.</td>
+<td style="text-align: left;"><strong>Upper</strong>: a random Amplitude
+Modulation pitch is applied each time the cell is played.<br /><br />
+<strong>Lower</strong>: a random Overdrive drive amount is
+applied.<br /><br />
+<strong>Span</strong>: set a random Amplitude Modulation pitch and an
+Overdrive drive amount.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💁 With Parameter Sliders that have two separate functions in the
+upper and lower halves, it’s not really possible to have a random range
+for the upper and a fixed value for the lower function (or vice versa).
+This is a small limitation of the design. This applies to a couple of
+the other faders too.</p>
+</blockquote>
+<h5 class="yellow" id="dual-state-lphp-filter">Dual-State LP/HP
+Filter</h5>
+<p>The yellow slider applies a resonant low-pass or high-pass filter to
+the cell output signal.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Single Value</th>
+<th style="text-align: left;">Range</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><img src="images/sd_focusYellowSlider.png"
+class="image2" alt="" /></td>
+<td style="text-align: left;"><strong>Upper</strong>: applies a resonant
+HPF. The cutoff requency gets higher the higher up the slider you
+click.<br /><br />
+<strong>Lower</strong>: applies a LPF. The cutoff frequency gets lower
+the further down the slider.</td>
+<td style="text-align: left;"><strong>Upper</strong>: applies the HPF
+mode and sets a random cutoff Frequency.<br /><br />
+<strong>Lower</strong>: applies the LPF and sets a random cutoff
+Frequency.<br /><br />
+<strong>Span</strong>: applies either the HPF or the LPF and sets a
+random cutoff Frequency.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💁 As well as the Dual-State filter here, on the <strong><em>Cell
+Utility View</em></strong> (accessed by the cog icon), there are two
+additional filters that are positioned at the end of the signal path for
+each cell. These are more like fixed band EQs, used for filtering out
+high or low frequency content. See section <a
+href="#cell-utility-settings"><em>Cell Utility View</em></a> for more
+detail.</p>
+</blockquote>
+<blockquote>
+<p>💁 The Attack-Decay envelope also is applied to the filter cutoff if
+you have anything other than the default center position set in the
+Attack-Decay slider.</p>
+</blockquote>
+<h5 class="green" id="attack-decay-envelope">Attack-Decay Envelope</h5>
+<p>The green slider applies a simple two-stage amplitude slope to the
+cell output signal.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Single Value</th>
+<th style="text-align: left;">Range</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><img src="images/sd_focusGreenSlider.png"
+class="image2" alt="" /></td>
+<td style="text-align: left;"><strong>Upper</strong>: sets an Attack
+value for the amplitude ramp. Shorter times near the middle, longer
+times near the top.<br /><br />
+<strong>Lower</strong>: sets a Decay value for the amplitude ramp.
+Longer times near the middle, shorter times near the bottom.</td>
+<td style="text-align: left;"><strong>Upper</strong>: applies an Attack
+ramp to the signal and sets a random time for the ramp.<br /><br />
+<strong>Lower</strong>: applies a Decay ramp to the signal and sets a
+random time for the ramp.<br /><br />
+<strong>Span</strong>: applies Attack and Decay ramps to the signal and
+sets a separate random time for both functions.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💁 The Attack-Decay envelope also is applied to the filter cutoff if
+you have anything other than the default center position set in the
+Attack-Decay slider.</p>
+</blockquote>
+<h5 class="cyan" id="gain-and-pan">Gain and Pan</h5>
+<p>The cyan slider controls the overall level and pan position of the
+cell output. You set the <em>base</em> pan position via the <a
+href="#cell-utility-settings"><em>Cell Utility Settings</em></a> - the
+modulation via this slider is based on that setting.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Single Value</th>
+<th style="text-align: left;">Range</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><img src="images/sd_focusCyanSlider.png"
+class="image2" alt="" /></td>
+<td style="text-align: left;"><strong>Upper</strong>: causes the pan
+position to be modified each time the cell is played. The further away
+from the center the more extreme the position shift.<br /><br />
+<strong>Lower</strong>: sets an output gain offset. The further from the
+center, the quiter the output.</td>
+<td style="text-align: left;"><strong>Upper</strong>: causes the pan
+position to be modified each time the cell is played. The further away
+from the center the more extreme the position shift.<br /><br />
+<strong>Lower</strong>: applies a random gain offset each time the cell
+is played.<br /><br />
+<strong>Span</strong>: applies both a random pan position and a random
+output gain offset each time the cell is played.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💁 <em>Gain</em> should really be named <strong>attenuation</strong>
+as it only decreases the output from the original sample amplitude. The
+name <em>Gain</em> is a hangover from early prototypes where you could
+increase the amplitude on this slider. That may make its way back in at
+some point so I’m leaving it as Gain for now.</p>
+</blockquote>
+<h5 class="blue" id="offset-and-looping-and-direction">Offset and
+Looping (and direction)</h5>
+<p>The blue slider controls sample offset and looping function and gives
+you the abilitty to play the sample forwards or backwards.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Single Value</th>
+<th style="text-align: left;">Range</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><img src="images/sd_focusBlueSlider.png"
+class="image2" alt="" /></td>
+<td style="text-align: left;"><strong>Upper</strong>: plays the sample
+forwards, without looping, the start point of the sample being
+represented by the distance of the value from the slider
+center.<br /><br />
+<strong>Lower</strong>: plays the sample backwards, without looping, the
+start point of the sample being represented by the distance from the
+slider center. When playing in reverse, the start offset is an offset
+from the <em>end</em> of the sample.</td>
+<td style="text-align: left;"><strong>Upper</strong>: plays the sample
+in a forwards loop, the size of the loop determined by the size of the
+range.<br /><br />
+<strong>Lower</strong>: plays the sample in a reverse loop, the size of
+the loop determined by the size of the range.<br /><br />
+<strong>Span</strong>: plays the sample in a loop with a 50:50 chance of
+it playing forwards or backwards. The size of the forward loop is
+determined by the distance from the center of the slider to the top of
+the range. The size of the reverse loop is determined by the distance
+from the center of the slider to the bottom of the range.</td>
+</tr>
+</tbody>
+</table>
+<h5 class="purple" id="probability-and-retriggering">Probability and
+Retriggering</h5>
+<p>The purple slider controls the probability of the sample playing and
+also controls retriggering of the sample within the duration of the
+cell.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Single Value</th>
+<th style="text-align: left;">Range</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><img src="images/sd_focusPurpleSlider.png"
+class="image2" alt="" /></td>
+<td style="text-align: left;"><strong>Upper</strong>: sets a probability
+for the cell sample to be played. The further away from the center, the
+less likely it will play.<br /><br />
+<strong>Lower</strong>: Lower: sets a speed for the sample to be
+repeated during it’s cell duration. The further from the center, the
+slower the repeat.</td>
+<td style="text-align: left;"><strong>Upper</strong>: sets a probability
+for the sample to be played. The further the upper part of the range is
+away from the center, the less likely it will play.<br /><br />
+<strong>Lower</strong>: sets a speed for the sample to be repeated
+during the cell’s duration. The further from the center the lower limit
+of the range, the slower the repeat speed.<br /><br />
+<strong>Span</strong>: the sample is always played and whether or not it
+is <em>retriggered</em> is determined by the distance of the upper range
+limit from the center. The speed of the retriggering is determined by
+the distance of the lower range limit from the center.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💁 Internally the retriggering speed uses Max’s musical duration
+notation so that they’re related to Live’s tempo. Fastest to slowest:
+64n, 32nt, 32n, 16nt, 32nd, 16n, 8nt, 16nd, 8n, 4nt, 8nd, 4n, 2nt, 2n
+where <em>n</em> =note, <em>nt</em> =triplet note and <em>nd</em>
+=dotted note.</p>
+</blockquote>
+<p><span id="self-modulation-slider"></span></p>
+<h5 class="magenta" id="self-modulation">Self-Modulation</h5>
+<p>The final slider, coloured magenta, controls <em>Self Modulation</em>
+for each cell. This slider also depends on a part of the cell UI that we
+haven’t touched on yet: <a
+href="#playback-parameter-select-toggles"><strong><em>Playback Parameter
+Select</em></strong></a> toggles (see below the function table for a
+fuller explanation of what’s going on here)</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Single Value</th>
+<th style="text-align: left;">Range</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><img
+src="images/sd_focusMagentaSlider.png" class="image2" alt="" /></td>
+<td style="text-align: left;"><strong>Upper</strong>: sends a single
+random value to <strong>upper half</strong> of any other slider that has
+its <strong>Playback Parameter Select</strong> set. The distance from
+the center determines the maximum for the random value, the minimum is
+the center of the target slider.<br/><br />
+<strong>Lower</strong>: sends a single random value to <strong>lower
+half</strong> of any other slider that has its <strong>Playback
+Parameter Select</strong> set. The distance from the center determines
+the minimum for the random value, the maximum is the center of the
+target slider.</td>
+<td style="text-align: left;"><strong>Range (upper/lower/span)</strong>:
+sends a random range to any other slider that has its <strong>Playback
+Parameter Select</strong> set. The size and position of the range in the
+target slider won’t exceed the range set here.</td>
+</tr>
+</tbody>
+</table>
+<h3 class="do_break_before"
+id="playback-parameter-select-toggles">Playback Parameter Select
+Toggles</h3>
+<hr />
+<p>The eight coloured square toggles at the base of a cell correspond to
+the slider of the same colour. Turning them on signifies to SPECDRUM
+that you wish to select them as a target for a manual or automated
+operation. This applies to functions both within the cell itself and
+also when manipulating the cell slider settings via the
+<strong><em>Macro Control</em></strong> section.</p>
+<p><img src="images/sd_cellPlaybackParameterSelect.png" class="image6"
+alt="" /></p>
+<p>In order to make the <a href="#self-modulation-slider"><strong>Self
+Modulation</strong></a> slider actually do anything you have to turn on
+one or more of the <strong>Playback Parameter Select</strong>
+toggles.</p>
+<blockquote>
+<p>💁 It’s not possible to self-modulate the Self Modulation slider even
+though you can toggle its <strong>Playback Modulation Toggle</strong>.
+The ability to set its toggle is for use in the “<strong>Macro Control
+Section</strong>”macro-control-section controls and also when clearing
+the cell sliders via the <a href="#cell-playback-controls"><strong>Cell
+Playback Controls</strong></a></p>
+</blockquote>
+<blockquote>
+<p>💁 There’s a <em>hidden</em> function of the <strong>Playback
+Parameter Select</strong> toggles. It’s possible to use your mouse to
+<em>double-click</em> a toggle which will reset the respective Parameter
+Slider.</p>
+</blockquote>
+<h2 id="cell-playback-controls">Cell Playback Controls</h2>
+<hr />
+<p>Each cell has a set of icons in the area above the sliders. These are
+the <strong><em>Cell Playback Controls</em></strong>. They can be
+operated manually, by clicking on them with the mouse, and also can be
+interacted with via the <a href="#macro-control-section"><strong>Macro
+Control Section</strong></a> where you can perform functions on multiple
+or all of the cells simultaneously.</p>
+<p class='do_break_before'>
+<p><img src="images/sd_cellPlaybackControls.png" class="image6"
+alt="" /></p>
+</p>
+<table>
+<tbody>
+<tr class="odd">
+<td><img src="images/playIcon.png" class="image1" alt="" /></td>
+<td><strong>Cell Play</strong>: used to determine if the sample is
+played when the sequencer reaches the cell. This is green when play is
+enabled and grey when not.<br /><br />
+Disabling Cell Play also stops the <strong>Self Modulation</strong>
+fader from sending any values to its Cell’s sliders. You’re still able
+to use the <strong>Macro Control</strong> controls to manipulate any
+cell’s sliders though, regardless of its Play Enable status.<br/><br />
+💁 <strong>There’s a <em>hidden</em> feature of the Cell Play control.
+If you hold your mouse pointer over it, the full path of the currently
+loaded sample will be displayed.</strong></td>
+</tr>
+<tr class="even">
+<td><img src="images/selectIcon.png" class="image1" alt="" /></td>
+<td><strong>Cell Select</strong>: this is used to select the cell for
+operations performed by the <strong>Macro Control</strong> section. As
+well as manually selecting individual cells, multiple cells can be
+selected from the <strong>Macro Control</strong> section.<br /><br />
+💁 <strong>There are special functions for Cell Select when dragging
+samples into cells. See <a href="#loading-samples">Loading Samples</a>
+for more detail.</strong><br><br />
+💁 <strong>There is also a special function for Cell Select to enable
+changing Cell Utility Settings simultaneously in multiple cells. See <a
+href="#cell-utility-settings">Cell Utility Settings</a> for more
+detail.</strong></td>
+</tr>
+<tr class="odd">
+<td><img src="images/holdIcon.png" class="image1" alt="" /></td>
+<td><strong>Cell Hold</strong>: used to <em>hold/freeze</em> the cell.
+When enabled, any ranges that are set in the sliders or any other
+modulation that targets the sliders (either from the <em>Macro
+Controls</em> or <em>Self Modulation Slider</em>) will be ignored and
+the sample will be played using whatever parameter values it held before
+Cell Hold was engaged.<br /><br />
+💁 <strong>If you send any new values from Macro Controls, while Cell
+Hold is active in any cells you target, the sliders may change
+appearance but no audio changes will be heard until you turn off Cell
+Hold.</strong></td>
+</tr>
+<tr class="even">
+<td><img src="images/clearSampleIcon.png" class="image1" alt="" /></td>
+<td><strong>Cell Clear Sample</strong>: removes the currently loaded
+sample from the Cell. Undo is limited so use with care! All other
+parameters in the Cell are unaffected.</td>
+</tr>
+<tr class="odd">
+<td><img src="images/resetSliderIcon.png" class="image1" alt="" /></td>
+<td><strong>Cell Reset Parameters</strong>: clicking this will reset any
+Parameter Sliders that have their Playback Parameter Select toggle
+on.<br /><br />
+💁 <strong>Please note that if none of the Playback Parameter Select
+toggles are turned on, <em>Cell Reset</em> will reset ALL Parameter
+Sliders. This is intentional, providing a shortcut to reset all sliders
+without having to first select them all.</strong></td>
+</tr>
+<tr class="even">
+<td><img src="images/cellUtilityViewIcon.png" class="image1"
+alt="" /></td>
+<td><strong>Cell Utility View</strong>: clicking on this icon will
+reveal the <a href="#cell-utility-settings"><em>Cell Utility
+View</em></a> The <em>Cell Utility View</em> has an identical icon that
+will return you to the regular view of the cell. See the next section
+<strong><em>Cell Utility Setting</em></strong> for details on
+this.<br /><br />
+💁 <strong>Even if the cell has the <em>Cell Utility View</em> active it
+will still function normally, including the ability to drop samples onto
+it.</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="loading-samples">Loading Samples</h2>
+<hr />
+<p>To load samples in SPECDRUM you need to drag-and-drop them onto the
+Sequencer Cells. You can drag them from a computer folder (Desktop,
+Documents etc.) and also drag them from Live’s built-in file browser.
+SPECDRUM will handle most typical file formats.</p>
+<blockquote>
+<p>💁 There are issues when trying to drag samples into multiple cells
+from within Live’s file browser <em>when the samples are contained
+within a Live Pack</em>. I’ve not figured out what the cause is yet so
+for now either stick to samples that you’ve explicity imported into Live
+(not inside a Live Pack) or just drag them from your computer file
+system.</p>
+</blockquote>
+<h3 id="sample-loading-and-cell-select">Sample Loading and Cell
+Select</h3>
+<p>The Cell Select toggle on each Sample Cell has special functions for
+loading samples into multiple cells and loading multiple samples.</p>
+<h4 id="loading-a-sample-to-multiple-cells">Loading A Sample To Multiple
+Cells</h4>
+<p>It’s possible to load a single sample into multiple cells. To do
+this, first turn on the Cell Select control for each of the cells you’d
+like to load the sample into then drop the sample onto any of those
+selected cells. This works on a track basis i.e. dropping a sample onto
+selected cells in Track A won’t load that sample onto any cells in Track
+B (and vice versa).</p>
+<h4 id="loading-multiple-samples-to-multiple-cells">Loading Multiple
+Samples to Multiple Cells</h4>
+<p>In a similar way to loading a single sample to multiple cells, it’s
+also possible to load multiple samples into multiple cells. First select
+the cells you want to load samples into via the Cell Select control,
+then with multiple samples selected, drop them onto any of the selected
+cells. This works on a track basis i.e any samples you drop into Track A
+won’t be loaded into any cells on Track B (and vice versa).</p>
+<p>A couple of conditions apply:</p>
+<ul>
+<li>When you drop the samples, SPECDRUM sorts the sample list
+alphabetically (it also internally converts the file path to uppercase
+to compensate for case-sensitive operating systems) and then loads them
+in that order into selected cells from left-to-right.</li>
+<li>If you drop more samples than there are selected cells (or more than
+eight samples being that there are only eight cells per track) then the
+extra samples are just ignored.</li>
+<li>If you drop less samples than there are selected cells then the
+samples will be alphabetically sorted and loaded into the selected cells
+from left-to-right. The extra cells will have their existing sample left
+intact.</li>
+<li>If you drop multiple samples onto a cell that doesn’t have Cell
+Select enabled, only one sample will be loaded, most likely the last of
+the selected files (when they’re sorted alphabetically).</li>
+</ul>
+<h2 class="do_break_before" id="cell-utility-settings">Cell Utility
+Settings</h2>
+<hr />
+<p>We’ve covered this one before briefly. Clicking on the cog icon will
+reveal the <strong>back</strong> of the cell where there are a few
+utility controls:</p>
+<p><img src="images/sd_cellUtilityView.png" class="image6" alt="" /></p>
+<blockquote>
+<p>💁 <strong>Cell Utility Settings and the Cell Select
+Toggle</strong><br><br />
+It’s possible to change utility settings in multiple cells
+simultaneously by using the Cell Select toggle.<br><br />
+To change settings in multple cells first enable Cell Select (yellow
+tick icon) in the cells you want to change: note that this includes the
+cell that you want to use as the <em>master</em> control. Then change
+the Utility settings of any one of the selected cells and the changes
+will be reflected in all the other selected cells. This operates on a
+per-track basis so modifying selected cells in Track A will not affect
+any cells, selected or not, on Track B.</p>
+</blockquote>
+<h4 id="gate">GATE</h4>
+<p>This is used to toggle between two different playback modes for each
+cell. The default mode is Gate (<span class="digit">&gt;|</span>) which
+only plays the sample for the duration of the cell (or until the sample
+ends naturally) and a <em>Note Off</em> command is sent by the sequencer
+to the current cell just before next cell is played. This effectively
+makes each track operate in a <em>monophonic</em> way. Clicking on this
+control toggles between Gate and Trigger. In <em>Trigger</em> mode
+(<span class="digit">&gt;</span>) a <em>Note Off</em> command isn’t sent
+to the cell so that any long samples will continue to play overlapping
+the next cell. Any samples that play past the end of the next cell will
+naturally be cut off next time the same cell is played.</p>
+<blockquote>
+<p>💁 In some circumstances, if your Sequencer Playback Mode is set to
+<em>Random</em>, you could get a temporarily <em>stuck</em> sample using
+the <em>Trigger</em> mode. This isn’t so much of an issue using the
+other Playback Modes, as any samples that have not been stopped will
+naturally be stopped the next time its cell is triggered. However when
+using the Random play mode, conceivably, if the sample is long, it could
+be <em>stuck</em> for an unpredictable amount of time. This can also
+happen if you’ve employed any looping with the blue <em>Offset and
+Looping</em> slider and there is no Decay set on the cell via the green
+<em>AD Envelope</em> slider. If the sample loops and the Cell Gate Mode
+is set to <em>Trigger</em>, the sample will continue looping until it’s
+interrupted by the cell being triggered again by the sequencer.</p>
+</blockquote>
+<h4 id="scale">SCALE</h4>
+<p>Click the box beneath ‘SCALE’ to select a fixed scale to apply to the
+Pitch/Speed Slider output. The default setting is ‘[Hz]’ which signifies
+that no scale is applied. For any other setting the three-letter
+abbreviation corresponds to the following scales:</p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Chr</strong> - chromatic</td>
+<td style="text-align: left;"><strong>Dor</strong> - dorian</td>
+<td style="text-align: left;"><strong>Slc</strong> - super locrian</td>
+<td style="text-align: left;"><strong>MiP</strong> - minor
+pentatonic</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Maj</strong> - major</td>
+<td style="text-align: left;"><strong>Phr</strong> - phrygian</td>
+<td style="text-align: left;"><strong>MjB</strong> - major blues</td>
+<td style="text-align: left;"><strong>Gyp</strong> - gypsy</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Min</strong> - minor</td>
+<td style="text-align: left;"><strong>Lyd</strong> - lydian</td>
+<td style="text-align: left;"><strong>MiB</strong> - minor blues</td>
+<td style="text-align: left;"><strong>Chi</strong> - chinese</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Hmi</strong> - harmonic minor</td>
+<td style="text-align: left;"><strong>Mly</strong> - mixolydian</td>
+<td style="text-align: left;"><strong>Dim</strong> - diminished</td>
+<td style="text-align: left;"><strong>Plg</strong> - pelog</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Mmi</strong> - melodic minor</td>
+<td style="text-align: left;"><strong>Loc</strong> - locrian</td>
+<td style="text-align: left;"><strong>MjP</strong> - major
+pentatonic</td>
+<td style="text-align: left;"><strong>Iwa</strong> - iwato</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💁 The playback pitch behaves a little differently depending if you
+have a scale applied.<br><br />
+<strong>No scale [Hz]</strong>: the original playback speed of the
+sample is at the center of the Pitch/Speed slider (red). Moving the
+slider up increases the pitch/speed, moving it down decreases the
+pitch/speed. You can change the pitch by approximately a factor of 3
+either way.<br><br />
+<strong>Scale</strong>: the center of the slider is double the original
+playback speed. I did this to give you more higher pitches than lower
+pitches as the lower pitches quickly become useless after about two
+octaves down.<br><br />
+In Scale mode, the lower part of the slider range then becomes the
+<em>root</em> of the scale and the scale is applied <em>upwards</em>
+from that point. If you have a tuned sample at C, for example, and wish
+to play random notes from a D Minor scale, first put the scale into
+Chromatic mode (Chr) and use the slider to set a single value until the
+cell is playing a D. Now hold shift and click-drag upwards from that
+point to define the range and switch the scale to Minor (Min). It’s
+important to remember the scale works <em>upwards</em>. If you move the
+whole range lower from this point, whatever note is denoted by the new
+lower end of the slider range will be the root of the scale so you’ll no
+longer be getting notes from the D Minor scale (unless by chance you
+managed to make the lower part of the range land on D!). If you want to
+set a new root just repeat the process of defining a single-value range,
+switching to Chromatic, setting the root note with the slider and then
+expanding the range <strong>updwards</strong> to get random pitches in
+that scale. You can of course move the upper part of the scale and it
+will stay in D Minor (as long as you don’t move it below the lower limit
+of the range!)<br><br />
+Sounds more complicated than it is in practice!</p>
+</blockquote>
+<h4 id="rtrg">RTRG</h4>
+<p>RTRG stands for <em>Retrigger</em> and enables a sort of experimental
+mode for the retriggering function as controlled by the
+<strong><em>Probability and Retrigger</em></strong> slider.</p>
+<p>Ordinarily, with this feature turned off, the generation of new
+random values for Parameter Sliders ranges only happens when the
+sequencer triggers the cell. With <strong>RTRG</strong> turned on, when
+a cell has Retriggering enabled (via the pink slider), each time the
+cell retriggers it’s sample a new random value will be genereated from
+any Parameter Slider ranges but <strong>only</strong> for any sliders
+that have their Parameter Select toggle on.</p>
+<p>It’s a bit of a weird one that can generate some really unique
+sounds, especially targetting the <em>Dual Filter</em> and the
+<em>Offset and Looping</em> sliders.</p>
+<h4 id="hilo-dial">HI/LO Dial</h4>
+<p>These control the cutoff frequency for a high pass and low pass
+filter added to the end of the signal chain of each cell. These can’t be
+modulated and are there just to roll off any problematic low or high
+frequencies at the output of each cell.</p>
+<h4 id="pan-dial">PAN Dial</h4>
+<p>Sets the <em>base</em> pan position for the output of the cell. Like
+the low and high pass filters, this can’t be modulated however the final
+panning position of the cell output is determined by adding together
+this value to the value determined by the <strong><em>Gain and
+Pan</em></strong> slider.</p>
+<h4 id="cog-icon">Cog Icon</h4>
+<p>Returns you to the normal cell view. <strong>Note</strong>: while the
+Cell Utility View is active the cell will still function as expected,
+including the ability to drop samples onto it.</p>
+<h2 class="do_break_before" id="sequencer-controls">Sequencer
+Controls</h2>
+<hr />
+<p>Each track of SPECDRUM is driven by its own step sequencer. Its
+behaviour is controlled by each tracks’s <strong><em>Sequencer
+Control</em></strong></p>
+<blockquote>
+<p>💁 <strong>Clock</strong><br />
+The sequencers get their clock information from Live’s transport and so
+will react to, and stay in sync with, Live’s global tempo.</p>
+</blockquote>
+<h3 id="control-functions">Control Functions</h3>
+<p><img src="images/sd_sequencerControlLegend.png" class="image6"
+alt="" /></p>
+<h4 id="clock-divider">Clock Divider</h4>
+<p>This represents how the clock for the sequencers is derived from
+Live’s tempo. It determines by how much 1 bar is divided by to get the
+length of one step in SPECDRUM’s sequencers.</p>
+<h4 id="musicalnumerical-mode">Musical/Numerical Mode</h4>
+<p>The Clock Divider has two different <em>modes</em>,
+<strong><em>musical</em></strong> and
+<strong><em>numerical</em></strong>. Both do the same thing, divide a
+bar by the number on the Clock Divider display, but the Musical Mode
+(when the note symbol is lit) restricts the divider to <em>musical</em>
+divisions. In Numerical Mode the Clock Divider value is just an
+arbitrary integer.</p>
+<h4 id="clock-divider-musical-mode">Clock Divider: Musical Mode</h4>
+<p>In Musical Mode, this is what the divider value represents in
+relation to Live’s transport/clock:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Clock Divider</th>
+<th style="text-align: left;">Step Length Relative to Live’s
+Transport</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="digit">00</span></td>
+<td style="text-align: left;">Stopped</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="digit">01</span></td>
+<td style="text-align: left;">1 Bar</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="digit">02</span></td>
+<td style="text-align: left;">1/2 Bar</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="digit">03</span></td>
+<td style="text-align: left;">1/2 triplet note</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="digit">04</span></td>
+<td style="text-align: left;">1/4 note</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="digit">06</span></td>
+<td style="text-align: left;">1/4 triplet note</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="digit">08</span></td>
+<td style="text-align: left;">1/8 note</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="digit">12</span></td>
+<td style="text-align: left;">1/8 triplet note</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="digit">16</span></td>
+<td style="text-align: left;">1/16 note</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="digit">24</span></td>
+<td style="text-align: left;">1/16 triplet note</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="digit">32</span></td>
+<td style="text-align: left;">1/32 note</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💁 Through the Clock Dividers and the Start Step and Length
+parameters, SPECDRUM’s sequencers always stay in mathematically related
+synchronisation with each other and with Live.</p>
+</blockquote>
+<h4 id="start-step">Start Step</h4>
+<p>This determines which step of the sequencer is treated as “Step 1”.
+When Live’s transport is stopped (and started again), the sequencers
+will start on this step.</p>
+<h4 id="length">Length</h4>
+<p>This sets how many steps the sequencer will play before jumping back
+to the Start Step (or changing direction, in the case of Ping-Pong and
+Oscillating Playback Modes). Remember, “Step 1” is determined by
+<strong>Start Step</strong> and doesn’t mean the first physical cell of
+the sequencer UI).</p>
+<blockquote>
+<p>💁 You’ll notice that it’s possible to set a Start Step and Length
+combination that goes beyond the physical end of the sequencer. In this
+condition, SPECDRUM will wrap around to the first <em>cell</em> of the
+sequencer (not the Start Step) until a number of steps has been played
+as determined by the Length parameter. This is deliberate and can lead
+to some interesting sequencing. For example, setting a Start of 6 and a
+Length of 5, in Forward playback mode, will play steps 6 7 8 1 2, 6 7 8
+1 2 etc.</p>
+</blockquote>
+<h4 class="do_break_before" id="playback-mode">Playback Mode</h4>
+<p>The arrow between the Start and Length digits controls the
+<strong>Playback Mode</strong> of the sequencer. Click-and-drag (up or
+down) on the icon will cycle through the five playback modes:
+<strong><em>Forward</em></strong>, <strong><em>Reverse</em></strong>,
+<strong><em>Ping-Pong</em></strong>,
+<strong><em>Oscillating</em></strong> and
+<strong><em>Random</em></strong>.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Icon</th>
+<th style="text-align: left;">Play Mode Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><img src="images/sd_playForward.png"
+class="image2" alt="" /></td>
+<td style="text-align: left;"><strong>Forward</strong>: plays
+left-to-right from the Start Step for the Length specified and then
+loops back to the Start Step again.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><img src="images/sd_playReverse.png"
+class="image2" alt="" /></td>
+<td style="text-align: left;"><strong>Reverse</strong>: starts at the
+End Step and plays right-to-left for the specified Length then loops
+back to the End Step again.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><img src="images/sd_playPingPong.png"
+class="image2" alt="" /></td>
+<td style="text-align: left;"><strong>Ping-Pong</strong>: plays
+left-to-right from the Start Step for the Length specified and then
+switches direction and plays from right-to-left for the Length
+specified. Note that the step at the start end end of the sequencer
+range will play twice to maintain the total number of steps e.g. 1 2 3 4
+4 3 2 1 1 2 3 etc.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><img src="images/sd_playOscillating.png"
+class="image2" alt="" /></td>
+<td style="text-align: left;"><strong>Oscillating</strong>: plays
+left-to-right from the Start Step for the Length specified then switches
+directions and plays from right-to-left. This is similar to
+<em>Ping-Pong</em> but the difference is that the sequencer direction
+switches immediately on playing the end or start step of the current
+range e.g. 1 2 3 4 3 2 1 2 3 4 etc.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><img src="images/sd_playRandom.png"
+class="image2" alt="" /></td>
+<td style="text-align: left;"><strong>Random</strong>: chooses the next
+step randomly in the range defined by the Start Step and Length
+parameters.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="swing">Swing</h4>
+<p>The horizontal slider controls the <em>swing</em> amount applied to
+the sequencer. When the slider is fully left, no swing is applied. All
+the way to the right and <em>maximum</em> swing is applied. The range is
+0% to about 65%. Each track has its own swing setting.</p>
+<blockquote>
+<p>💁 <strong>Swing, SPECDRUM style!</strong><br /><br />
+The way swing is applied is that every even-numbered step of the
+sequencer has a pre-triggering delay applied to it. That’s a fairly
+standard approach but the way it works in SPECDRUM, because you can set
+arbitrary <strong>Start</strong> and <strong>Length</strong> parameters
+for the sequencers, is that it’s the <strong><em>even-numbered steps
+that get delayed but the even-numbered steps are relative to the
+<strong>Start</strong> parameter.</em></strong><br /><br />
+For example, If your sequence starts on step 1 and is 8 steps long, cell
+2, 4 and 6 will be delayed. However, if your sequence starts on, say,
+step 4 and is 4 steps long, cells 5 and 7 will be delayed. It makes more
+sense if you just try it. Also, Swing works in both forward and reverse
+directions e.g. if your sequence starts at step 5 and is 4 steps long
+<strong>and</strong> is playing backwards, steps 4 and 2 will be
+delayed. Again, it makes far more sense if you just experiment. Swing is
+also applied to the <strong>Ping-Pong</strong>,
+<strong>Oscillating</strong> and <strong>Random</strong> playback
+modes.<br /><br />
+In Ping-Pong Mode swing works pretty much the same as the
+Forward/Reverse modes but in Random and Oscillating modes it literally
+just <strong>swings</strong> every other step that is played regardless
+of that step’s location in the sequence. It does work though!</p>
+</blockquote>
+<h2 class="do_break_before" id="macro-control-section">Macro Control
+Section</h2>
+<hr />
+<p>The <strong><em>Macro Control Section</em></strong> is where you can
+perform simultaneous operations on multiple cells and/or multiple
+Playback Parameters. It’s primarily a convenience feature but also has
+some great creative uses of its own, especially if you pair SPECDRUM up
+with a MIDI controller and <a href="#midi-controls-and-mapping">map some
+of the controls</a>.</p>
+<p><img src="images/sd_macroControlOverview.png" class="image6"
+alt="" /></p>
+<p>As explained at the start of this document, the Macro Control Section
+is further split into two distinct parts: <strong><em>Cell
+Operations</em></strong> and <strong><em>Playback Parameter
+Operations</em></strong></p>
+<h3 id="cell-operations">Cell Operations</h3>
+<p><img src="images/sd_macroControlCellOperations.png" class="image6"
+alt="" /></p>
+<p>The upper half of <strong>Cell Operations</strong>, labelled
+<strong>CELL SELECT</strong> has three buttons that perform
+<em>selection</em> actions on the sequencer cells.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="digit">ALL</span></td>
+<td>Cycles between selecting all the cells on both tracks, all the cells
+on Track A and all the cells on Track B.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="digit">INV</span></td>
+<td>Whatever cells you have selected, this button will <em>invert</em>
+the selection.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="digit">NONE</span></td>
+<td>Deselects all cells.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💁 When a cell is selected, the <em>Cell Select</em> icon will be lit
+yellow. When as cell is not selected the <em>Cell Select</em> icon will
+be grey.</p>
+</blockquote>
+<p>The lower half of <strong>Cell Operations</strong> labelled
+<strong><em>CELL ACTIONS</em></strong> has three buttons that perform
+various actions on selected cells.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="digit">PLAY</span></td>
+<td>For any cells that are currently selected this will toggle their
+<strong><em>Cell Play</em></strong> status</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="digit">CLR</span></td>
+<td>For any currently selected cells, <strong>this button will remove
+their loaded sample</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="digit">HOLD</span></td>
+<td>For any selected cells, this button will toggle their
+<strong><em>Cell Hold</em></strong> status</td>
+</tr>
+</tbody>
+</table>
+<h3 id="playback-parameter-operations">Playback Parameter
+Operations</h3>
+<p>The lower half of the <strong>Macro Control</strong> is the
+<strong><em>Playback Parameter Operations</em></strong> section. This
+section is a little complex so experiment while reading through the
+explanations and it should make sense.</p>
+<p><img src="images/sd_macroControlParameterOperations.png"
+class="image6" alt="" /></p>
+<blockquote>
+<p>💁 <strong>A Couple of Important Concepts</strong><br /><br />
+In order to target a parameter (or parameters) inside a cell, the cell
+itself must be selected as well as the Playback Parameter Select
+toggle(s). There is an exception to this when using the <strong><em>Cell
+Defeat</em></strong> control (see below).<br ><br />
+These operations only affect sequencer cells that have their <em>Cell
+Select</em> button highlighted.</p>
+</blockquote>
+<h4 id="macro-control-parameter-selector">Macro Control Parameter
+Selector</h4>
+<p>The eight coloured toggle buttons correspond to the Parameter Sliders
+in the cells. The cross icon to the right of the toggles is just a handy
+button to clear the parameter selection here: it does not clear anything
+in the sequencer cells themselves.</p>
+<h4 id="cell-defeat">Cell Defeat</h4>
+<p>Underneath the parameter selection control is the <em>Cell
+Defeat</em> toggle. This is used to force changes to cell parameters
+even if the parameters within the cells are not selected. The cells
+themselves still need to be selected though. This is so you can use the
+Macro Section to perform mass/multiple Playback Parameter changes in one
+or more cells without having to manually select the Playback Parameter
+Select toggles in each cell individually. I know. Read it a few more
+times, you’ll get there!</p>
+<h4 id="select-button">Select Button</h4>
+<p><span class="digit">SELECT</span> will configure Parameter Select
+toggle buttons of any currently selected cells to match what is selected
+in the Macro Control Parameter Selector. For example, if you’ve turned
+on all of the Parameter Select toggles in the Macro Controls and press
+SELECT, any cells that are selected will have all of their Parameter
+Select toggles enabled.</p>
+<h4 id="reset-button">Reset Button</h4>
+<p><span class="digit">RESET</span> will reset any currently selected
+sliders in any currently selected cells. This also works in conjunction
+with <em>Cell Defeat</em> switch. If <em>Cell Defeat</em> is turned on,
+the reset command will be sent to any currently selected cells and will
+reset sliders within those cells that match the Macro Control Parameter
+Selector.</p>
+<blockquote>
+<p>💁 As with the cell control that resets the parameter sliders,
+clicking RESET here with no parameters selected will reset ALL parameter
+sliders in any currently selected cells.</p>
+</blockquote>
+<h3 id="macro-control-slider-modification-controls">Macro Control Slider
+Modification Controls</h3>
+<p>The final section of the Macro Controls is the <strong><em>Slider
+Modification Controls</em></strong></p>
+<p><img src="images/sd_macroModifyControls.png" class="image4"
+alt="" /></p>
+<p>Slider Modification allows you to directly manipulate multiple
+Parameter Sliders in selected cells. The targeting of cells and sliders
+is done in the same way as the Parameter Control Operations: one or more
+cells needs to be selected, either manually or via the Macro Control,
+and one or more Parameter Sliders need to be selected (or use the Cell
+Defeat switch to override the local slider selection with the one set in
+the Macro Controls).</p>
+<h4 id="modification-controls">Modification Controls</h4>
+<p>The dial is used to set the <em>amount</em> and <em>type</em> of
+modification you want to perform. As you turn the dial left or right
+from the center, you’ll notice that the colour of the dial changes and
+also the button underneath changes colour and text.</p>
+<p>Turn the dial to the left and it will turn yellow, the button text
+will read <span class="digit">MOD</span>. In this mode, targeted sliders
+will have their range modified by a random amount. The scale of the
+modification depends on how far left you rotate the dial. The further
+left, the more extreme the change.</p>
+<p>Turn the dial to the right and it will turn orange, the button text
+will read <span class="digit">RAND</span>. In this mode, targeted
+sliders will receive a random <em>single value</em>. The further right
+you turn the dial, the larger the scale of the random value from the
+center.</p>
+<blockquote>
+<p>💁 In order to send the modification to the targeted sliders you have
+to click the <span class="digit">MOD/RAND</span> button.</p>
+</blockquote>
+<h4 id="macro-parameter-slider">Macro Parameter Slider</h4>
+<p>Finally, on the right is the Macro Parameter Slider. Again, this is
+used to target selected Parameter Sliders of selected cells. The slider
+works the same as the Parameter Sliders in the cells. Whatever value or
+range you set here will be sent immedately to the selected parameters of
+any selected cells.</p>
+<p>The Macro Parameter Slider also observes the Cell Defeat switch.</p>
+<blockquote>
+<p>💁 Unlike the MOD/RAND dial/button control, setting values in the
+Macro Parameter Slider sends the values immediately to the targetted
+Parameter Sliders.</p>
+</blockquote>
+<h3 id="help">HELP!</h3>
+<p>The bottom-left corner of the Macro Control section contain three
+helper buttons.</p>
+<h4 id="panic-button">Panic Button</h4>
+<p>Very rarely one of the cells might get <em>stuck</em> and the sample
+won’t stop playing. This can happen when you have looped samples (using
+the Offest/Direction/Looping slider) in Trigger Mode without setting the
+AD Envelope (essentially you’ve <em>told</em> SPECDRUM not to turn the
+sample off).</p>
+<p>If you get a <em>stuck</em> cell, click the Panic Button and all
+currently playing samples will be stopped.</p>
+<h4 id="mouse-over-hint-toggle">Mouse-Over Hint Toggle</h4>
+<p>Note: as of V1.10 mouse-over hints are off by default.</p>
+<p>This button enables you to turn the mouse-over hints on or off. Not
+all hints are turned off, this is deliberate. There’s a small delay when
+turning the hints off as Max has to traverse the entire SPECDRUM device
+tree for all the hints it needs to turn off.</p>
+<p>It’s also a slightly experimental feature as the function isn’t
+actually <em>provided</em> in Live or Max (so it’s coded in JS inside
+SPECDRUM).</p>
+<h4 id="help-button">Help Button</h4>
+<p>You can click this to open the current manual in a web browser.</p>
+<h2 class="do_break_before" id="midi">MIDI</h2>
+<hr />
+<h3 id="midi-rationale">MIDI Rationale</h3>
+<p>You can skip past to <a href="#midi-controls-and-mapping">MIDI:
+Controls and Mapping</a> if you just want to find out what’s mappable
+and what isn’t. This first bit will tell you why.</p>
+<p>MIDI, at the time of release, is functional but a bit sketchy. There
+are two reasons for this: firstly the sheer number of SPECDRUM controls
+(16 cells x 8 Parameter Sliders and 8 Cell Select buttons <em>plus</em>
+Cell Playback controls means over 300 controls to MIDI-map in the
+sequencers alone!). Secondly, for aesthetic and sometimes flexibility
+reasons, I often chose to use the standard version of common Max objects
+over their Max For Live equivalent to build the UI - the major one being
+the <code>rslider</code> objects themselves as they don’t even have a
+Max For Live equivalent! The downside of these choices is that it
+affects how easily and deeply SPECDRUM’s UI is able to be
+MIDI-mapped.</p>
+<p>Some controls are directly mappable in Live via MIDI Learn. Others
+require you to place SPECDRUM inside an Audio Effect Rack and then use
+Live’s rack macro controls. If you’re not familiar with this technique:
+you first map a Live device control element to a rack macro
+(right-clicking a control is the simplest way). Once the control is
+mapped to a rack macro you then use Live’s MIDI Learn to assign an
+external MIDI control to that rack macro control: MIDI Control -&gt;
+Macro Control -&gt; Device Control.</p>
+<h4 id="macro-parameter-slider-1">Macro Parameter Slider</h4>
+<p>This one proved challenging because Max’s <code>rslider</code>
+objects require more complicated interaction (via mouse and keyboard) to
+set and modify their range. Subsequently there’s no way to assign a
+single MIDI control to <code>rslider</code> objects. However, I was
+determined to make this control at least somewhat MIDI-mappable because
+it’s definitely a key performance feature in SPECDRUM. Here’s what I
+came up with.</p>
+<p>When you put Live into MIDI Learn mode you will see that two
+previously hidden mapping targets will reveal themselves above the Macro
+Parameter Slider (it’s actually two Live Dial objects that are
+transparent).</p>
+<p><img src="images/rangeMidiMapping.png" class="image6" alt="" /></p>
+<p>In order to control the Macro Parameter Slider, assign one MIDI
+control to the upper square (this controls the range maximum value) and
+another MIDI control to the lower square (this controls the range
+minimum value). You then will use two MIDI controls to manipulate the
+range.</p>
+<p>Also, at initial release, you need to ensure your MIDI device is able
+to send MIDI CC messages in relative mode and set the Live mapping to
+relative when you learn the inputs. The combination of MIDI CC type and
+Live’s mapping types that work are: <em>Relative Mode (1/127)</em> with
+<em>2-bit Relative</em> and also <em>Relative Mode (63/65)</em> with
+<em>Bin Offset</em>. This is just for this particular control, the
+others should just work as normal. The mapping will actually
+<em>work</em> in regular <em>Absolute</em> mode it’s just that you’ll
+get jumps in the output because the slider values are not fed back to
+the MIDI controller. Where possible I’ll improve this in future
+updates.</p>
+<p>With mapping somewhat solved, the other aspect I wanted to get right
+was how you manipulate the Macro Parameter Slider via MIDI controls. I
+wanted to give you the ability to modify the range max and min values
+but also to be able to set a single value so that you get the most out
+of SPECDRUMS’s behaviours. With this in mind, as you move your assigned
+MIDI control for the range low value, if you raise it so that it meets
+the high value and then continue, the high and low values will become
+equal and both will continue increasing, collapsing the range into a
+single value. This of course works the other way: trying to lower the
+high value past the low value will collect them together and the high
+value will be pushing the low value down. If you want to move the entire
+range just move both MIDI controls simultaneously.</p>
+<h4 id="playing-the-cells-via-midi">Playing the Cells Via MIDI</h4>
+<p>As well as triggering the sequencer cells from SPECDRUM’s sequencers,
+you can trigger them via MIDI keys. Track A and Track B cells are mapped
+to MIDI note 48-55 and 60-67 respectively. At the moment this is fixed
+but I’ll improve it in future updates.</p>
+<p>You can run the sequencer and trigger cells via MIDI keys at the same
+time giving some interesting performance abilities. The MIDI key
+triggering has a few facets:</p>
+<ul>
+<li>If the cell you are triggering has it’s Cell Play status enabled,
+MIDI velocity will be ignored and the cell will get it’s volume output
+setting from the Pan/Volume slider</li>
+<li>If the cell you are triggering has it’s Cell Play status disabled,
+triggering via MIDI will use the MIDI velocity to scale the output
+volume of the cell. The Pan setting of the Pan/Volume slider will still
+behave as normal</li>
+<li>Triggering via MIDI respects the Trigger Mode of the cell, in Gate
+Mode the sample will be stopped when it receives a MIDI Note Off
+command, in Trigger Mode the Note Off will be ignored and the sample in
+the cell will play to it’s end</li>
+<li>Triggering via MIDI also respects any Parameter Slider settings when
+the sample is played.</li>
+</ul>
+<h4 id="recalling-presets-via-midi">Recalling Presets via MIDI</h4>
+<p>Any slot of the currently loaded Preset collection can be recalled
+via MIDI through note numbers 0-39.</p>
+<h3 class="do_break_before" id="midi-controls-and-mapping">MIDI:
+Controls and Mapping</h3>
+<p>As described in the <strong>MIDI: Rationale</strong> above, not all
+controls are able to be <em>directly</em> learned via Live’s MIDI Learn
+function. The table below lays out the differences in the MIDI-mapping
+ability of the controls.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Function</th>
+<th style="text-align: center;">Live MIDI Learn</th>
+<th style="text-align: center;">Live Rack Macro</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Trigger Sample Cell (1)</td>
+<td style="text-align: center;">Track A: MIDI notes 48-55<br>Track B:
+MIDI notes 60-67</td>
+<td style="text-align: center;">Track A: MIDI notes 48-55<br>Track B:
+MIDI notes 60-67</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cell Parameter Sliders</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cell Parameter Select</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cell Play Status</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cell Select Status</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cell Hold Status</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cell Clear Sample</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cell Reset Sliders</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cell Utility HiPass Filter</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cell Utility LoPass Filter</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cell Utility Pan</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cell Utility Gate Mode</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cell Utility Scale Mode</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cell Utility Retrigger Mode</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sequencer: Clock Divider Mode</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sequencer: Clock Divider</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sequencer: Swing</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sequencer: Play Mode</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sequencer: Start Step</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sequencer: Length</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sequencer: Track Volume</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sequencer: Track Mute</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Macro Control: Cell Select Functions</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Macro Control: Cell Action Functions</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Macro Control: Parameter Select
+Buttons</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Macro Control: Parameter Select
+Select</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Macro Control: Parameter Select Reset</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Macro Control: Parameter Cell Defeat</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Macro Control: Parameter Modify Dial</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Macro Control: Parameter Modify Send</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Macro Control: Slider Range Control
+(2)</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Recall Preset (3)</td>
+<td style="text-align: center;">MIDI Notes 0-39 = Preset 1-40</td>
+<td style="text-align: center;">MIDI Notes 0-39 = Preset 1-40</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>(1) MIDI key triggering of the cells is a fixed function and does not
+need (or is able) to be mapped.<br><br />
+(2) As detailed in <a href="#midi-rationale">MIDI: Rationale</a> MIDI
+mapping of the Macro Control Parameter Slider requires two MIDI controls
+to control the minimum and maximum values that define the slider
+range.<br><br />
+(3) MIDI recalling of Presets is a fixed function and is not able to be
+mapped.</p>
+</blockquote>
+<h2 class="do_break_before" id="preset-system">Preset System</h2>
+<hr />
+<p>(Implemented in release V1.10 - was not available for initial V1.0
+release)</p>
+<p><img src="images/presetSystem.png" class="image6" alt="" /></p>
+<p>The Preset section handles storing and recalling of Max For Live
+Preset ‘snapshots’ as well as loading and saving of preset files. You
+can store up-to 40 of these snapshots that can be recalled either with
+the UI or via MIDI (see below). If you close Live or SPECDRUM (or Live
+crashes etc.) then you’ll lose the snapshots unless you’ve saved them to
+disc.</p>
+<blockquote>
+<p>💁 The Preset snapshot collection is written to disc as a JSON file.
+The default file, and the one that SPECDRUM will try to find in your Max
+paths is named <strong>“specdrumStorage.json”</strong> though you can
+save and load other storage files via the Preset UI controls.</p>
+</blockquote>
+<h4 id="storing-a-snapshot">Storing A Snapshot</h4>
+<p>To store a snapshot, hold SHIFT and click one of the slots in the 4 x
+10 grid. Empty slots are dark, slots that already have data stored in
+them are bright, the currently loaded slot is brighter still. If you
+store a snapshot in a cell that already contains data it will be
+overwritten. There is no undo.</p>
+<h4 id="recalling-a-snapshot">Recalling A Snapshot</h4>
+<p>To recall a snapshot just click on the slot you want to recall. If
+the slot is empty (darkly colored), clicking on it will do nothing.</p>
+<h4 id="loading-saving-and-clearing-presets">Loading, Saving and
+Clearing Presets</h4>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><img src="images/loadPresetsIcon.png"
+class="image1" alt="" /></td>
+<td>To load a Preset collection (JSON file) click this button. A system
+file dialog will appear to enable you to navigate to the Preset
+file.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><img src="images/savePresetsIcon.png"
+class="image1" alt="" /></td>
+<td>To save a Preset collection click this button. A system file dialog
+will appear to enable you to navigate to the folder where you would like
+to save the file.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><img src="images/clearPresetsIcon.png"
+class="image1" alt="" /></td>
+<td>If you should wish to clear all of the currently stored presets
+click this button. All preset slots will be empty.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="recalling-preset-slots-via-midi">Recalling Preset Slots via
+MIDI</h4>
+<p>It is possible to recall any of the currently loaded presets using
+MIDI. The 40 slots are mapped to MIDI notes 0 through to 39.</p>
+<h4 id="what-is-saved-in-a-preset">What is saved in a Preset?</h4>
+<ul>
+<li>Currently loaded sample for every cell</li>
+<li>All of the Parameter Sliders, Parameter Select toggles and Utility
+Settings for every cell</li>
+<li>All of the sequencer settings for Track A and Track B</li>
+</ul>
+<p>I’ve deliberately excluded controls and settings from the Macro
+Controls though I could exapand the Presets to include these settings in
+the future. The mouse-over hint status is deliberately not saved
+either.</p>
+<blockquote>
+<p>💁 <strong>Recall Speed</strong><br><br />
+In order to make the recalling as fast as possible, the Preset system
+employs a technique that only saves/loads parameters that have changed
+since the last Preset recall The first time you recall a Preset after
+loading an instance of SPECDRUM, you may experience a small delay. This
+is normal and any subsequent Preset recalls should be almost instant.
+Bear in mind that to recall a Preset where all the loaded samples change
+and there are lots of Cell Slider changes, that’s an awful lot of data
+to shift around in a short space of time so plan your Presets if you
+need to rely on instantaneous changes in a live performance. Small,
+incremental changes will feel more responsive than large dramatic
+ones.</p>
+</blockquote>
+<h2 class="do_break_before" id="release-history">Release History</h2>
+<hr />
+<h3 id="v1.1-september-2023">V1.1, September 2023</h3>
+<h4 id="new-features">New Features</h4>
+<p>Added Max For Live Preset section so you can now store up-to 40
+presets ‘inside’ SPECDRUM. Please see “Preset System” for full
+explantion and usage.</p>
+<p>Related to Preset section, added ability to recall presets using MIDI
+note. Please see “Preset System” for details.</p>
+<p>Added “panic” button to Macro Section. With the new Preset system,
+the chances of getting a ‘stuck’ cell (a cell that keeps playing when
+you switch Presets) has increased in chance. It <em>shouldn’t</em>
+happen but if it does, the Panic Button will kill all currently playing
+cells.</p>
+<h4 id="changes">Changes</h4>
+<p>Behaviour change: mouse-over hints are now turned OFF by default so
+you have to manually turn them on if you need them.</p>
+<h4 id="bug-fixes">Bug Fixes</h4>
+<p>Slider Value Overlay: sometimes these could get ‘stuck’ until you
+move the associated slider. Made some improvements to the slider value
+hints overlay so it should be much less likely to happen.</p>
+<h3 id="v1.0-12th-june-2023">V1.0, 12th June 2023</h3>
+<p>Change log relative to unreleased beta version.</p>
+<h4 id="new-features-1">New Features</h4>
+<p>Multiple sample loading. Added ability to load multiple samples by
+selecting multiple cells, select multiple samples and drop onto one of
+the selected cells. See ‘Loading Samples’ in the manual (updated with
+this release) for details.</p>
+<p>Routed AD envelope to Dual Filter: if you have set values in the AD
+slider, the envelope shape will be sent to the dual filter so you’ll get
+a slight filter sweep. If the AD slider is at it’s default position then
+the filter is unaffected. This works both in the cells and for the Macro
+Paramter Slider.</p>
+<h4 id="improvements">Improvements</h4>
+<p>Improved loading and saving structure so should be faster and more
+robust now.</p>
+<p>Live &amp; Undo: I’ve made several improvements to the slider
+handling which means Live’s undo buffer/history won’t be flooded with so
+many changes when you’re moving sliders in SPECDRUM. The only obvious
+exception to this is the Self Modulation slider: it generates a lot of
+parameter change data so use with care if you’re editing other tracks in
+Live with this enabled as it will destroy your undo history. Best option
+I’ve found is to just turn SPECDRUM off or stop Live playback while
+making edits to other tracks (if you’re using SPECDRUM’s Self Modulation
+feature).</p>
+<p>Added scales to Cell Settings. Now you can pick from 20 scales (or
+none) via the drop-down menu on the Cell Utility View.</p>
+<p>Added ability to change multiple Cell Utility settings
+simultaneously.</p>
+<p>Added multiple audio outputs from device. Regular track output is a
+mix of both tracks (post track fader), output 3/4 is Track A, output 5/6
+is Track B.</p>
+<p>Rewrote amplitude envelopes entirely in Gen~ mainly to try to
+eliminate audible clicks when quickly triggering samples with low
+harmonic content like low frequency sine waves. It’s much improved but
+because of the rather chaotic nature of SPECDRUM it’s difficult to
+eliminate entirely without a rewrite of the sample engine (which is
+likely to happen in future releases!).</p>
+<p>Slider value overlay: added a feature that displays a small
+two-integer, colour-coded overlay next to a slider when you interract
+with it. When you stop moving the slider the overlay fades out. This is
+to aid with setting specific values.</p>
+<p>Mouse-over Hints. Added a small toggle button at the bottom-left of
+the UI to toggle mouse-over hints on/off. Not all hints are turned off,
+this is deliberate.</p>
+<h4 id="bug-fixes-1">Bug Fixes</h4>
+<p><strong>Severe</strong>: Saving a Live preset (or Set) with
+combinations of Cell Select, Cell Defeat or any Parameter Select button
+enabled would cause unpredictable results when reloading the preset/set.
+Note: because of fixes/changes to the saving/loading structure it’s
+unlikely any saved presets/sets will load properly if saved with the
+previous version.</p>
+<p>Minor: if a sample was looped and AD envelope applied, the
+probability setting of a cell would have no affect.</p>
+<p>Minor: if a sample was looped (upper or lower range), sometimes the
+loop would play as a one-shot.</p>
+<p>Minor: MOD macro control would have no apparent effect when using for
+the first time</p>
+<p>Minor: Start/Loop, Envelope, Retrigger and Self Modulation slider
+changes only took effect on the second time triggering the cell.</p>
+<p>Minor: if sample is looped and playing, turning off the Cell Play
+control would cause hung notes.</p>
+<p>Minor: first time playing a looped sample would pass incorrect
+start/end points to playback engine causeing incorrect pitch.</p>
+<p>Minor: Retriger mode not diminishing volume on repeats.</p>
+<p>Minor: A few minor text errors in the UI/hints.</p>
+<h3 id="date-beta-1">[date] Beta 1</h3>
+<p>Closed beta release only, not released to public.</p>
+</body>
+</html>
