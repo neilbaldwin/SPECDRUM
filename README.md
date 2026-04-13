@@ -6,9 +6,7 @@ SPECDRUM can be purchased from my Gumroad shop:
 
 [SPECDRUM @ Gumroad](https://neilbaldwin.gumroad.com/)
 
-The current version of the documenation can always be found on my Marmot Audio website here:
-
-[SPECDRUM Manual](https://marmotaudio.co.uk/SPECDRUM/documentation/specdrumManual.html)
+The documentation used to be on my Marmot Audio website but seing as that no longer exists I've added the manual to the repository here. Just clone/download the repository and open the HTML file in the 'SPECDRUM documentation' folder (or use the PDF but the HTML file has an index with links so is much handier!)
 
 ### SPECDRUM Issues ###
 
